@@ -1,0 +1,26 @@
+name: Build Fusion Fixer
+
+on:
+  workflow_dispatch:
+  push:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download repository
+        uses: actions/checkout@v4
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '6.0.x'
+
+      - name: Build project
+        run: dotnet build ./FusionFixer.csproj -c Release
+
+      - name: Upload DLL
+        uses: actions/upload-artifact@v4
+        with:
+          name: FusionFixer-DLL
+          path: '**/bin/Release/**/*.dll'
